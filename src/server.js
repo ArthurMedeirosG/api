@@ -15,8 +15,16 @@ const userJSON = JSON.stringify(user);
 
 
 
-http.createServer((request, response)=>{
+http.createServer(({url, method}, response)=>{
+
+    if (url === '/users' && method === 'GET'){
+
     response.writeHead(200, {'content-type': 'application/json; charset=utf-8'})
-    response.end(userJSON)
+    response.end(userJSON);
+    return;
+    }
+
+    response.writeHead(404, {'content-type': 'application/json; charset=utf-8'})
+    response.end(`Cannot ${method} ${url}`)
 }).listen(3000);
 
